@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SalesVault Modal</title>
+
+  <!-- Prevent iframe restrictions -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;">
+
+  <!-- CORS Headers - these should also be reflected server-side -->
+  <meta http-equiv="Access-Control-Allow-Origin" content="*">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-size: 1.2em;
+      color: #0066cc;
+    }
+    .param {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>SalesVault Modal</h1>
+  <div id="queryParams">
+    <p><em>Loading URL parameters...</em></p>
+  </div>
+
+  <script>
+    function displayQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      const container = document.getElementById("queryParams");
+      container.innerHTML = ""; // Clear loading message
+
+      if ([...params].length === 0) {
+        container.innerHTML = "<p><strong>No query parameters found.</strong></p>";
+        return;
+      }
+
+      params.forEach((value, key) => {
+        const h3 = document.createElement("h3");
+        h3.className = "param";
+        h3.textContent = `${key}: ${value}`;
+        container.appendChild(h3);
+      });
+    }
+
+    window.onload = displayQueryParams;
+  </script>
+</body>
+</html>
