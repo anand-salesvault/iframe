@@ -5,10 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SalesVault Modal</title>
 
-  <!-- Remove these meta tags: they are ignored and misleading -->
-  <!-- <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;"> -->
-  <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -29,8 +25,8 @@
     }
   </style>
 
-  <!-- Include Pipedrive App Extensions SDK -->
-  <script src="https://cdn.pipedriveassets.com/app-extensions-sdk.js"></script>
+  <!-- Include Pipedrive App Extensions SDK - CORRECT CDN URL -->
+  <script src="https://cdn.jsdelivr.net/npm/@pipedrive/app-extensions-sdk@0/dist/index.umd.js"></script>
 </head>
 <body>
   <h1>SalesVault Modal</h1>
@@ -63,7 +59,8 @@
       }
 
       try {
-        const sdk = await new window.AppExtensionsSDK({
+        // Use the global AppExtensionsSDK from CDN
+        const sdk = await new AppExtensionsSDK({
           identifier: iframeId
         }).initialize({
           // Optional: default modal dimensions
