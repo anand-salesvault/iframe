@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SalesVault Modal</title>
+
+  <!-- Remove these meta tags: they are ignored and misleading -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;"> -->
+  <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-size: 1.2em;
+      color: #0066cc;
+    }
+    .param {
+      margin: 10px 0;
+    }
+  </style>
+
+  <!-- Include Pipedrive App Extensions SDK -->
+  <script src="https://cdn.pipedriveassets.com/app-extensions-sdk.js"></script>
+</head>
+<body>
+  <h1>SalesVault Modal</h1>
+  <div id="queryParams">
+    <p><em>Loading URL parameters...</em></p>
+  </div>
+
+  <script>
+    async function displayQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      const container = document.getElementById("queryParams");
+      container.innerHTML = ""; // Clear loading message
+
+      if ([...params].length === 0) {
+        container.innerHTML = "<p><strong>No query parameters found.</strong></p>";
+      } else {
+        params.forEach((value, key) => {
+          const h3 = document.createElement("h3");
+          h3.className = "param";
+          h3.textContent = `${key}: ${value}`;
+          container.appendChild(h3);
+        });
+      }
+
+      // Initialize the Pipedrive SDK
+      const iframeId = params.get("id");
+      if (!iframeId) {
+        console.error("No 'id' parameter found in URL — cannot initialize SDK.");
+        return;
+      }
+
+      try {
+        const sdk = await new window.AppExtensionsSDK({
+          identifier: iframeId
+        }).initialize({
+          // Optional: default modal dimensions
+          size: { width: 600, height: 400 }
+        });
+
+        console.log("✅ Pipedrive SDK initialized successfully with ID:", iframeId);
+      } catch (err) {
+        console.error("❌ Failed to initialize Pipedrive SDK:", err);
+      }
+    }
+
+    window.onload = displayQueryParams;
+  </script>
+</body>
+</html>
